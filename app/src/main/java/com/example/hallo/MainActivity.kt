@@ -1,8 +1,12 @@
 package com.example.hallo
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -39,8 +43,13 @@ class MainActivity : AppCompatActivity() {
 
         // 2
         Log.d(TAG, "onCreate called. Score is: $score")
-        tapMeButton.setOnClickListener { incrementScore() }
+        tapMeButton.setOnClickListener { v ->
+            val bounceAnimation = AnimationUtils.loadAnimation(this,
+                R.anim.bounce);
 
+            v.startAnimation(bounceAnimation)
+            incrementScore()
+        }
         if (savedInstanceState != null) {
             score = savedInstanceState.getInt(SCORE_KEY)
             timeLeft = savedInstanceState.getInt(TIME_LEFT_KEY)
@@ -59,12 +68,34 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "onSaveInstanceState: Saving Score: $score & Time Left:$timeLeft")
     }
     // 3
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+// Inflate the menu; this adds items to the action bar if it is present.
+        super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.about_item) {
+            showInfo()
+        }
+        return true
+    }
+
+    private fun showInfo() {
+        val dialogTitle = getString(R.string.about_title,
+            BuildConfig.VERSION_NAME)
+        val dialogMessage = getString(R.string.about_message)
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(dialogTitle)
+        builder.setMessage(dialogMessage)
+        builder.create().show()
+    }
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "onDestroy called.")
     }
-
-        private fun incrementScore() {
+    private fun incrementScore() {
             // increment score logic
             if (!gameStarted) {
                 startGame()

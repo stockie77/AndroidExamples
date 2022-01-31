@@ -4,5 +4,7 @@
     <string name="your_score">Dein Score: %1$d</string>
     <string name="time_left">Verbrauchte Zeit: %1$d</string>
     <string name="game_over_message">Zeit ist vorbei! Dein score ist: %1$d</string>
+    <string name="about_title">Hallo %1$s</string>
+    <string name="about_message">Created by Uwe</string>
 </resources>
 
